@@ -7,6 +7,7 @@ import com.ary.cuarso.springboot.error.springbooterror.models.domains.User;
 import com.ary.cuarso.springboot.error.springbooterror.services.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,12 +29,16 @@ public class AppController {
     @GetMapping("/show/{id}")
     public User showByid(@PathVariable(name="id")Long id){
 
-        User user =service.findById(id);
-        if(user==null){
-            throw new UserNotFoundException("Error el usuario no existe ");
-        }
-        System.out.println(user.getLastname());
-        return user ;
+        User user =service.findById(id).orElseThrow(()->new UserNotFoundException("Error el usuario no existe "));
+        // if(user==null){
+        //     throw new UserNotFoundException("Error el usuario no existe ");
+        // }
+        // Optional<User> optionalUser=service.findById(id);
+        // if(optionalUser.isEmpty()){
+        //     return ResponseEntity.notFound().build();
+        // }
+        //System.out.println(user.getLastname());
+        return user;
         
     }
 }
